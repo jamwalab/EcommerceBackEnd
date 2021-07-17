@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Category, Product, Tag, ProductTag } = require('../../models');
 
 // The `/api/categories` endpoint
-
+//-----GET API - FIND ALL CAREGORIES-----//
 router.get('/', (req, res) => {
   // find all categories
   Category.findAll({
@@ -20,6 +20,7 @@ router.get('/', (req, res) => {
   });
 });
 
+//-----GET API - FIND ONE CAREGORY-----//
 router.get('/:id', (req, res) => {
   // find one category by its `id` value
   Category.findOne({
@@ -31,6 +32,7 @@ router.get('/:id', (req, res) => {
         model: Product,
         attributes: ['id', 'product_name', 'price', 'stock'],
         include: {
+          //Get product tag
           model: Tag,
           attributes: ['tag_name'],
           through: ProductTag,
@@ -40,7 +42,7 @@ router.get('/:id', (req, res) => {
   })
   .then(dbData => {
     if (!dbData) {
-      res.status(404).json({message: 'No categoty found for this id!'})
+      res.status(404).json({message: 'No category found for this id!'})
       return;
     }
     res.json(dbData)
@@ -51,6 +53,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
+//-----POST API - ADD A CAREGORY-----//
 router.post('/', (req, res) => {
   // create a new category
   Category.create(req.body)
@@ -61,6 +64,7 @@ router.post('/', (req, res) => {
   });
 });
 
+//-----PUT API - UPDATE A CAREGORY-----//
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
   Category.update(req.body, {
@@ -77,10 +81,11 @@ router.put('/:id', (req, res) => {
   })
   .catch(err => {
     console.log(err)
-    res.status(400).json(err)
+    res.status(500).json(err)
   })
 });
 
+//-----DELETE API - DELETE A CAREGORY-----//
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
   Category.destroy({
@@ -97,7 +102,7 @@ router.delete('/:id', (req, res) => {
   })
   .catch(err => {
     console.log(err)
-    res.status(400).json(err)
+    res.status(500).json(err)
   })
 });
 
