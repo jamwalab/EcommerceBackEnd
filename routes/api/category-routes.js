@@ -34,7 +34,6 @@ router.get('/:id', (req, res) => {
           model: Tag,
           attributes: ['tag_name'],
           through: ProductTag,
-          as: 'tags'
         }
       }
     ]
@@ -42,7 +41,7 @@ router.get('/:id', (req, res) => {
   .then(dbData => res.json(dbData))
   .catch(err => {
     console.log(err)
-    res.status(500).json(err)
+    res.status(404).json({message: 'No category was found with this id'});
   });
 });
 
